@@ -54,6 +54,9 @@ export class Ember implements Integration {
       if (getCurrentHub().getIntegration(Ember)) {
         getCurrentHub().withScope(scope => {
           if (isInstanceOf(reason, Error)) {
+            if (reason.name === 'TransitionAborted') {
+              return;
+            }
             scope.setExtra('context', 'Unhandled Promise error detected');
             getCurrentHub().captureException(reason, { originalException: reason });
           } else {
